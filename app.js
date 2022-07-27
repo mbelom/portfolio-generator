@@ -11,7 +11,7 @@ const promptUser = () => {
       validate: nameInput => {
         if (nameInput) {
           return true;
-        } else {
+        } else { 
           console.log('Please enter your name!');
           return false;
         }
@@ -40,12 +40,7 @@ const promptUser = () => {
       type: 'input',
       name: 'about',
       message: 'Provide some information about yourself:',
-      when: ({ confirmAbout }) => {
-        if (confirmAbout) {
-          return true;
-        } else {
-          return false;
-        }
+      when: ({ confirmAbout }) => confirmAbout
     }
   ]);
 };
@@ -136,21 +131,9 @@ promptUser()
   .then(portfolioData => {
     const pageHTML = generatePage(portfolioData);
 
+    fs.writeFile('./index.html', pageHTML, err => {
+      if (err) throw new Error(err);
 
-    // change the path to look like this
-    fs.writeFile('./dist/index.html', pageHTML, err => {
-      if (err) {
-        console.log(err);
-        return;
-      }
       console.log('Page created! Check out index.html in this directory to see it!');
-    
-      fs.copyFile('./src/style.css', './dist/style.css', err => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log('Style sheet copied successfully!');
-      });
     });
   });
